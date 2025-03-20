@@ -2,7 +2,7 @@ package driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.io.FileInputStream;
@@ -14,30 +14,23 @@ public class DriverFactory {
 
     public static WebDriver getDriver() {
         if (webDriver.get() == null) {
-            webDriver.set(createDriver());
+            createDriver();
         }
         return webDriver.get();
     }
 
-    private static WebDriver createDriver() {
-        WebDriver driver = null;
-
-        switch (getBrowserType()) {
-            case "chrome" -> {
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions options = new ChromeOptions();
-                // Add arguments to ChromeOptions
-                options.addArguments("--remote-allow-origins=*");
-                driver.manage().window().maximize();
-            }
-            case "firefox" -> {
+    private static void createDriver() {
+        switch (getBrowserType().toLowerCase()) {
+            case "firefox":
                 WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-            }
+                webDriver.set(new FirefoxDriver());
+                break;
+            case "chrome":
+            default:
+                WebDriverManager.chromedriver().setup();
+                webDriver.set(new ChromeDriver());
+                break;
         }
-        assert driver != null;
-        driver.manage().window().maximize();
-        return driver;
     }
 
     private static String getBrowserType() {
@@ -55,7 +48,9 @@ public class DriverFactory {
     }
 
     public static void cleanupDriver() {
-        webDriver.get().quit();
-        webDriver.remove();
+        if (webDriver.get() != null) {
+            webDriver.get().quit();
+            webDriver.remove();
+        }
     }
 }
