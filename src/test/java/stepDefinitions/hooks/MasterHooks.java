@@ -1,11 +1,12 @@
-package stepDefinitions.base;
+package stepDefinitions.hooks;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
-import static driver.driverFactory.getDriver;
-import static driver.driverFactory.cleanupDriver;
+import static driver.DriverFactory.getDriver;
+import static driver.DriverFactory.cleanupDriver;
 
-public class masterHooks {
+public class MasterHooks {
+
     @Before
     public void setup() {
         getDriver();

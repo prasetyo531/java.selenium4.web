@@ -1,17 +1,15 @@
 package driver;
 
-import org.openqa.selenium.PageLoadStrategy;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class driverFactory {
+public class DriverFactory {
     private static ThreadLocal<WebDriver> webDriver = new ThreadLocal<>();
 
     public static WebDriver getDriver() {
@@ -26,20 +24,18 @@ public class driverFactory {
 
         switch (getBrowserType()) {
             case "chrome" -> {
-                System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/main/java/driver/drivers/chromedriver.exe");
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                driver = new ChromeDriver(chromeOptions);
-                break;
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions options = new ChromeOptions();
+                // Add arguments to ChromeOptions
+                options.addArguments("--remote-allow-origins=*");
+                driver.manage().window().maximize();
             }
             case "firefox" -> {
-                System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir") + "/src/main/java/driver/drivers/geckodriver.exe");
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                driver = new FirefoxDriver(firefoxOptions);
-                break;
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
             }
         }
+        assert driver != null;
         driver.manage().window().maximize();
         return driver;
     }
@@ -49,7 +45,7 @@ public class driverFactory {
 
         try {
             Properties properties = new Properties();
-            FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/java/properties/config.properties");
+            FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/java/environments/Config.properties");
             properties.load(file);
             browserType = properties.getProperty("browser").toLowerCase().trim();
         } catch (IOException ex) {
