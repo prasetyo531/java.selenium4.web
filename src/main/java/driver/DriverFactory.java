@@ -20,7 +20,7 @@ public class DriverFactory {
         return webDriver.get();
     }
 
-    private static WebDriver createDriver() {
+    private static void createDriver() {
         WebDriver driver = null;
 
         switch (getBrowserType().toLowerCase()) {
@@ -39,8 +39,11 @@ public class DriverFactory {
                 driver.manage().window().maximize();
                 break;
             }
+            default -> throw new IllegalArgumentException("Browser type not supported: " + getBrowserType());
         }
-        return driver;
+
+        // Set the created driver in the ThreadLocal variable
+        webDriver.set(driver);
     }
 
     private static String getBrowserType() {
@@ -63,7 +66,9 @@ public class DriverFactory {
     }
 
     public static void cleanupDriver() {
-        webDriver.get().quit();
-        webDriver.remove();
+        if (webDriver.get() != null) {
+            webDriver.get().quit();
+            webDriver.remove();
+        }
     }
 }
