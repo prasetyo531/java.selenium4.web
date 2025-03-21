@@ -1,9 +1,10 @@
 package driver;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,6 +13,9 @@ import java.util.Properties;
 public class DriverFactory {
     private static ThreadLocal<WebDriver> webDriver = new ThreadLocal<>();
 
+    public final static String CHROME_DRIVER_DIRECTORY = System.getProperty("user.dir") + "//chromedriver";
+    public final static String GECKO_DRIVER_DIRECTORY = System.getProperty("user.dir") + "//geckodriver";
+
     public static WebDriver getDriver() {
         if (webDriver.get() == null) {
             createDriver();
@@ -19,18 +23,28 @@ public class DriverFactory {
         return webDriver.get();
     }
 
-    private static void createDriver() {
+    private static WebDriver createDriver() {
+        WebDriver driver = null;
+
         switch (getBrowserType().toLowerCase()) {
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                webDriver.set(new FirefoxDriver());
+            case "firefox" -> {
+                System.setProperty("webdriver.gecko.driver", GECKO_DRIVER_DIRECTORY);
+                System.setProperty("webdriver.firefox.bin", "/Applications/Firefox.app/Contents/MacOS/firefox");
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
                 break;
-            case "chrome":
-            default:
-                WebDriverManager.chromedriver().setup();
-                webDriver.set(new ChromeDriver());
+            }
+            case "chrome" -> {
+                System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_DIRECTORY);
+                ChromeOptions chromeOptions = new ChromeOptions();
+                chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                chromeOptions.addArguments("--remote-allow-origins=*");
+                driver = new ChromeDriver(chromeOptions);
                 break;
+            }
         }
+        driver.manage().window().maximize();
+        return driver;
     }
 
     private static String getBrowserType() {
