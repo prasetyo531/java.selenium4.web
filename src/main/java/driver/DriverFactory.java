@@ -1,9 +1,11 @@
 package driver;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.FileInputStream;
@@ -28,18 +30,18 @@ public class DriverFactory {
 
         switch (getBrowserType().toLowerCase()) {
             case "firefox" -> {
-                System.setProperty("webdriver.gecko.driver", GECKO_DRIVER_DIRECTORY);
-                System.setProperty("webdriver.firefox.bin", "/Applications/Firefox.app/Contents/MacOS/firefox");
-                FirefoxOptions firefoxOptions = new FirefoxOptions();
-                firefoxOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                driver.manage().window().maximize();
                 break;
             }
             case "chrome" -> {
-                System.setProperty("webdriver.chrome.driver", CHROME_DRIVER_DIRECTORY);
-                ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-                chromeOptions.addArguments("--remote-allow-origins=*");
-                driver = new ChromeDriver(chromeOptions);
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--remote-allow-origins=*");
+                //options.addArguments("--headless");
+                driver = new ChromeDriver(options);
+                driver.manage().window().maximize();
                 break;
             }
         }
@@ -49,12 +51,17 @@ public class DriverFactory {
 
     private static String getBrowserType() {
         String browserType = null;
+        String browserTypeRemoteValue = System.getProperty("browserType");
 
         try {
-            Properties properties = new Properties();
-            FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/java/environments/Config.properties");
-            properties.load(file);
-            browserType = properties.getProperty("browser").toLowerCase().trim();
+            if (browserTypeRemoteValue == null || browserTypeRemoteValue.isEmpty()) {
+                Properties properties = new Properties();
+                FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/java/environments/Config.properties");
+                properties.load(file);
+                browserType = properties.getProperty("browser").toLowerCase().trim();
+            } else {
+                browserType = browserTypeRemoteValue;
+            }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -62,9 +69,7 @@ public class DriverFactory {
     }
 
     public static void cleanupDriver() {
-        if (webDriver.get() != null) {
-            webDriver.get().quit();
-            webDriver.remove();
-        }
+        webDriver.get().quit();
+        webDriver.remove();
     }
 }
