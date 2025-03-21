@@ -1,12 +1,10 @@
 package driver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,9 +12,6 @@ import java.util.Properties;
 
 public class DriverFactory {
     private static ThreadLocal<WebDriver> webDriver = new ThreadLocal<>();
-
-    public final static String CHROME_DRIVER_DIRECTORY = System.getProperty("user.dir") + "//chromedriver";
-    public final static String GECKO_DRIVER_DIRECTORY = System.getProperty("user.dir") + "//geckodriver";
 
     public static WebDriver getDriver() {
         if (webDriver.get() == null) {
@@ -45,7 +40,6 @@ public class DriverFactory {
                 break;
             }
         }
-        driver.manage().window().maximize();
         return driver;
     }
 
