@@ -1,0 +1,34 @@
+# Use the official Maven image with JDK 17
+image: maven:3.9.9-openjdk-17
+
+# Define stages
+stages:
+  - clone
+  - build
+  - test
+
+# Clone the project from GitHub
+clone_project:
+  stage: clone
+  script:
+    - echo "Cloning the project from GitHub..."
+    - git clone https://github.com/yourusername/your-repo.git
+    - cd your-repo
+
+# Build the project
+build:
+  stage: build
+  script:
+    - echo "Building the project..."
+    - mvn clean package
+
+# Run tests
+test:
+  stage: test
+  script:
+    - echo "Running tests..."
+    - mvn test
+  artifacts:
+    paths:
+      - target/surefire-reports/*.xml  # Adjust this path based on your TestNG reports location
+      - target/surefire-reports/*.txt   # Optional: Include text reports if needed
