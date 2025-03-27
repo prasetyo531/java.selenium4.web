@@ -5,9 +5,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 public class DriverFactory {
@@ -15,9 +19,53 @@ public class DriverFactory {
 
     public static WebDriver getDriver() {
         if (webDriver.get() == null) {
-            createDriver();
+            if (isGridEnabled()) {
+                createRemoteDriver();
+            } else {
+                createDriver();
+            }
         }
         return webDriver.get();
+    }
+
+    private static boolean isGridEnabled() {
+        return Boolean.getBoolean("selenium.grid.enabled");
+    }
+
+    private static void createRemoteDriver() {
+        RemoteWebDriver driver = null;
+        String gridUrl = "http://localhost:4444/wd/hub";
+
+        switch (getBrowserType().toLowerCase()) {
+            case "firefox" -> {
+                WebDriverManager.firefoxdriver().setup();
+                FirefoxOptions options = new FirefoxOptions();
+                // Add any desired options for Firefox here
+                try {
+                    driver = new RemoteWebDriver(new URL(gridUrl), options);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException("Invalid Grid URL: " + gridUrl, e);
+                }
+                break;
+            }
+            case "chrome" -> {
+                WebDriverManager.chromedriver().setup();
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--remote-allow-origins=*");
+                // Add any desired options for Chrome here
+                try {
+                    driver = new RemoteWebDriver(new URL(gridUrl), options);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException("Invalid Grid URL: " + gridUrl, e);
+                }
+                break;
+            }
+            default -> throw new IllegalArgumentException("Browser type not supported: " + getBrowserType());
+        }
+
+        // Set the created driver in the ThreadLocal variable
+        webDriver.set(driver);
+        driver.manage().window().maximize();
     }
 
     private static void createDriver() {
