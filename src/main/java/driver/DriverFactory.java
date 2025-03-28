@@ -1,5 +1,7 @@
 package driver;
 
+import environments.Config;
+import environments.Constants;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,6 +17,7 @@ import java.net.URL;
 import java.util.Properties;
 
 public class DriverFactory {
+
     private static ThreadLocal<WebDriver> webDriver = new ThreadLocal<>();
 
     public static WebDriver getDriver() {
@@ -29,7 +32,7 @@ public class DriverFactory {
     }
 
     private static boolean isGridEnabled() {
-        return Boolean.getBoolean("selenium.grid.enabled");
+        return Boolean.parseBoolean(Config.get(Constants.SELENIUM_GRID_ENABLED));
     }
 
     private static void createRemoteDriver() {
@@ -101,7 +104,7 @@ public class DriverFactory {
         try {
             if (browserTypeRemoteValue == null || browserTypeRemoteValue.isEmpty()) {
                 Properties properties = new Properties();
-                FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/java/environments/Config.properties");
+                FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/resources/config/Config.properties");
                 properties.load(file);
                 browserType = properties.getProperty("browser").toLowerCase().trim();
             } else {
