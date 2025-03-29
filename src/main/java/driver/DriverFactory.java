@@ -37,7 +37,9 @@ public class DriverFactory {
 
     private static void createRemoteDriver() {
         RemoteWebDriver driver = null;
-        String gridUrl = "http://localhost:4444/wd/hub";
+        String urlFormat = Config.get(Constants.SELENIUM_GRID_URL_FORMAT);
+        String hubHost = Config.get(Constants.SELENIUM_GRID_HUB_HOST);
+        String gridUrl = String.format(urlFormat, hubHost);
 
         switch (getBrowserType().toLowerCase()) {
             case "firefox" -> {
@@ -99,12 +101,12 @@ public class DriverFactory {
 
     private static String getBrowserType() {
         String browserType = null;
-        String browserTypeRemoteValue = System.getProperty("browserType");
+        String browserTypeRemoteValue = Config.get(Constants.BROWSER);
 
         try {
             if (browserTypeRemoteValue == null || browserTypeRemoteValue.isEmpty()) {
                 Properties properties = new Properties();
-                FileInputStream file = new FileInputStream(System.getProperty("user.dir") + "/src/main/resources/config/Config.properties");
+                FileInputStream file = new FileInputStream(Constants.CONFIG_FILE_PATH);
                 properties.load(file);
                 browserType = properties.getProperty("browser").toLowerCase().trim();
             } else {
