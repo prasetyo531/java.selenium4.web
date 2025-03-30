@@ -2,10 +2,17 @@ package stepDefinitions.hooks;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 import io.qameta.allure.Allure;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import pageObjects.BasePageObjects;
 
-import static driver.DriverFactory.getDriver;
-import static driver.DriverFactory.cleanupDriver;
+import java.io.ByteArrayInputStream;
+
+import static driver.DriverFactory.*;
+import static pageObjects.BasePageObjects.*;
 
 public class MasterHooks {
 
@@ -16,9 +23,15 @@ public class MasterHooks {
     }
 
     @After
-    public void tearDown() {
+    public void tearDown(Scenario scenario) {
         // Log the result of the test in Allure
-        Allure.step("Tearing down the test and cleaning up WebDriver.");
+        if (scenario.isFailed()) {
+            Allure.step("Scenario failed: " + scenario.getName());
+            BasePageObjects basePageObjects = new BasePageObjects();
+            basePageObjects.captureScreenshot(scenario);
+        } else {
+            Allure.step("Scenario passed: " + scenario.getName());
+        }
 
         // Cleanup WebDriver
         cleanupDriver();

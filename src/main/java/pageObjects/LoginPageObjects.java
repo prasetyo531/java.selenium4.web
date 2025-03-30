@@ -4,21 +4,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class LoginPageObjects extends BasePageObjects {
-    private @FindBy(id = "text")
-    WebElement username_TextField;
 
-    private @FindBy(id = "password")
-    WebElement password_TextField;
+    private @FindBy(id = "text") WebElement username_TextField;
 
-    private @FindBy(id = "login-button")
-    WebElement login_Button;
+    private @FindBy(id = "password") WebElement password_TextField;
+
+    private @FindBy(id = "login-button") WebElement login_Button;
 
     public LoginPageObjects() {
         super();
     }
 
     public void navigateTo_WebDriverUniversity_Login_Page() {
-        navigateTo_URL("https://www.webdriveruniversity.com/Login-Portal/index.html?");
+        navigateTo_URL();
     }
 
     public void setUsername(String username) {

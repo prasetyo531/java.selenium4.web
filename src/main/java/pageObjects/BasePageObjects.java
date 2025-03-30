@@ -1,18 +1,28 @@
 package pageObjects;
 
 import driver.DriverFactory;
+import environments.Config;
+import environments.Constants;
+import io.cucumber.java.Scenario;
+import io.qameta.allure.Allure;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 
 public class BasePageObjects {
+
+    private WebDriver driver;
 
     public BasePageObjects() {
         PageFactory.initElements(getDriver(), this);
@@ -22,8 +32,8 @@ public class BasePageObjects {
         return DriverFactory.getDriver();
     }
 
-    public void navigateTo_URL(String url) {
-        getDriver().get(url);
+    public void navigateTo_URL() {
+        getDriver().get(Config.get(Constants.BASE_URL));
     }
 
     public String generateRandomNumber(int length) {
@@ -69,5 +79,38 @@ public class BasePageObjects {
         wait.until(ExpectedConditions.alertIsPresent());
         String alert_Message_Text = getDriver().switchTo().alert().getText();
         Assert.assertEquals(alert_Message_Text, text);
+    }
+
+    public void captureScreenshot(Scenario scenario) {
+        // Capture screenshot
+        if (driver instanceof TakesScreenshot) {
+            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+
+            saveScreenshotToFile(screenshot, scenario.getName());
+            // Add screenshot to Allure report
+            Allure.addAttachment("Screenshot", "image/png", new ByteArrayInputStream(screenshot), ".png");
+        } else {
+            Allure.step("Driver does not support taking screenshots.");
+        }
+    }
+
+    public void saveScreenshotToFile(byte[] screenshot, String scenarioName) {
+        try {
+            // Create target/screenshots directory if it doesn't exist
+            Path targetDir = Path.of("target/screenshots");
+            if (!Files.exists(targetDir)) {
+                Files.createDirectories(targetDir);
+            }
+
+            // Create a file for the screenshot
+            File screenshotFile = new File(targetDir.toFile(), scenarioName + ".png");
+            try (FileOutputStream fos = new FileOutputStream(screenshotFile)) {
+                fos.write(screenshot);
+            }
+
+            Allure.step("Screenshot saved to: " + screenshotFile.getAbsolutePath());
+        } catch (IOException e) {
+            Allure.step("Failed to save screenshot: " + e.getMessage());
+        }
     }
 }

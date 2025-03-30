@@ -18,22 +18,22 @@ public class Config {
         properties = loadProperties();
 
         // check for any override
-        for(String key: properties.stringPropertyNames()){
-            if(System.getProperties().containsKey(key)){
+        for (String key : properties.stringPropertyNames()) {
+            if (System.getProperties().containsKey(key)) {
                 properties.setProperty(key, System.getProperty(key));
             }
         }
     }
 
-    public static String get(String key){
+    public static String get(String key) {
         return properties.getProperty(key);
     }
 
-    private static Properties loadProperties(){
+    private static Properties loadProperties() {
         Properties properties = new Properties();
-        try(InputStream stream = ResourceLoader.getResource(DEFAULT_PROPERTIES)){
+        try (InputStream stream = ResourceLoader.getResource(DEFAULT_PROPERTIES)) {
             properties.load(stream);
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Message String = " + e.getMessage());
         }
         return properties;
