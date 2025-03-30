@@ -4,6 +4,8 @@ import io.cucumber.java.en.When;
 import pageObjects.BasePageObjects;
 import pageObjects.ElectonicPageObjects;
 
+import java.awt.*;
+
 public class ElectronicRecordSteps extends BasePageObjects  {
 
     private ElectonicPageObjects electonicPageObjects;
@@ -13,7 +15,7 @@ public class ElectronicRecordSteps extends BasePageObjects  {
     }
 
     @When("User fill valid electronic record form and save")
-    public void userFillValidElectronicRecordFormAndSave() {
-        electonicPageObjects.clickElectroRecordMenu();
+    public void userFillValidElectronicRecordFormAndSave() throws AWTException, InterruptedException {
+        electonicPageObjects.fillAndSaveElectronicForm();
     }
 }

@@ -84,8 +84,10 @@ public class BasePageObjects {
 
     public void switchToIframe(WebElement element, WebElement element2) {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(element)); // Wait for the iframe to be visible
-        DriverFactory.getDriver().switchTo().frame(element); // Switch to the iframe
+        // Wait for id iframe to be visible
+        wait.until(ExpectedConditions.visibilityOf(element));
+        // Switch to the iframe
+        DriverFactory.getDriver().switchTo().frame(element);
 
         wait.until(ExpectedConditions.visibilityOf(element2));
         DriverFactory.getDriver().switchTo().defaultContent();
@@ -140,5 +142,11 @@ public class BasePageObjects {
         } catch (IOException e) {
             Allure.step("Failed to save screenshot: " + e.getMessage());
         }
+    }
+
+    public void clickElementBeforeUpload(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(element)); // Wait for the file input to be visible
+        element.click(); // Set the file path to the input
     }
 }

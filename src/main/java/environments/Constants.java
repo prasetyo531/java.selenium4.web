@@ -14,4 +14,7 @@ public class Constants {
 
     // Application settings
     public static final String BASE_URL = "base.url";
+
+    // Doc Directory
+    public static final String UPLOAD_PDF_ONE = "upload.pdf.one";
 }
