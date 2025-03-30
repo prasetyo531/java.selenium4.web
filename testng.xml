@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="java.selenium4.web" parallel="tests" verbose="2" thread-count="4">
+<suite name="java.selenium4.web" parallel="tests" verbose="2" thread-count="1">
     <test name="main-test">
         <classes>
             <class name="runners.MainRunner"/>
-        </classes>
-    </test>
-    <test name="second-test">
-        <classes>
-            <class name="runners.LoginRunner"/>
         </classes>
     </test>
 </suite>

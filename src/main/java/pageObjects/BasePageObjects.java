@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.List;
 
 public class BasePageObjects {
 
@@ -74,11 +75,38 @@ public class BasePageObjects {
         wait.until(ExpectedConditions.elementToBeClickable(element)).click();
     }
 
-    public void waitForAlert_And_ValidateText(String text) {
+    public void waitForAlertAndValidateText(String text) {
         WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         wait.until(ExpectedConditions.alertIsPresent());
         String alert_Message_Text = getDriver().switchTo().alert().getText();
         Assert.assertEquals(alert_Message_Text, text);
+    }
+
+    public void switchToIframe(WebElement element, WebElement element2) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(element)); // Wait for the iframe to be visible
+        DriverFactory.getDriver().switchTo().frame(element); // Switch to the iframe
+
+        wait.until(ExpectedConditions.visibilityOf(element2));
+        DriverFactory.getDriver().switchTo().defaultContent();
+    }
+
+    public void clickButtonInTable(int rowIndex, WebElement element, By element2) {
+        // Wait for the table to be visible
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(element));
+
+        // Locate the rows of the table
+        List<WebElement> rows = element.findElements(By.tagName("tr"));
+
+        // Check if the row index is valid
+        if (rowIndex < 0 || rowIndex >= rows.size()) {
+            throw new IndexOutOfBoundsException("Row index is out of bounds");
+        }
+
+        // Locate the button in the specified row
+        WebElement button = rows.get(rowIndex).findElement(element2);
+        button.click();
     }
 
     public void captureScreenshot(Scenario scenario) {
