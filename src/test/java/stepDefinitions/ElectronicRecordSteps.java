@@ -14,8 +14,17 @@ public class ElectronicRecordSteps extends BasePageObjects  {
         this.electonicPageObjects = electonicPageObjects;
     }
 
-    @When("User fill valid electronic record form and save")
-    public void userFillValidElectronicRecordFormAndSave() throws AWTException, InterruptedException {
-        electonicPageObjects.fillAndSaveElectronicForm();
+    @When("User fill valid electronic record form in {string} and save")
+    public void userFillValidElectronicRecordFormInAndSave(String foldername) throws AWTException, InterruptedException {
+        electonicPageObjects.fillAndSaveElectronicForm(foldername);
+        electonicPageObjects.fillKeywordSynopsis();
+        electonicPageObjects.saveElectronicForm();
+    }
+
+    @When("User fill valid electronic record form in {string} and draft")
+    public void userFillValidElectronicRecordFormInAndDraft(String foldername) throws AWTException, InterruptedException {
+        electonicPageObjects.fillAndSaveElectronicForm(foldername);
+        electonicPageObjects.fillKeywordSynopsis();
+        electonicPageObjects.draftElectronicForm();
     }
 }

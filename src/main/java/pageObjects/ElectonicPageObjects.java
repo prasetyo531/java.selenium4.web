@@ -3,7 +3,6 @@ package pageObjects;
 import driver.DriverFactory;
 import environments.Config;
 import environments.Constants;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
@@ -26,12 +25,33 @@ public class ElectonicPageObjects extends BasePageObjects {
     private @FindBy(xpath = "//*[@id=\"uniform-fileRefSysId_581329\"]") WebElement resultSearchRadioBtn;
     private @FindBy(xpath = "//*[@id=\"frmSearchFileRefsFrm\"]/div/div/table/tbody/tr[4]/td/div/input[1]") WebElement okBtn;
 
+    private @FindBy(xpath = "//*[@id=\"keywords1\"]") WebElement keywordField;
+    private @FindBy(xpath = "//*[@id=\"synopsis1\"]") WebElement synopsisField;
+    private @FindBy(xpath = "//*[@id=\"frmProfileFrm\"]/table/tbody/tr[5]/td/div/a[3]") WebElement saveBtn;
+    private @FindBy(xpath = "//*[@id=\"frmProfileFrm\"]/table/tbody/tr[5]/td/div/a[1]") WebElement draftBtn;
+
     public ElectonicPageObjects() {
         super();
     }
 
-    public void fillAndSaveElectronicForm() throws AWTException, InterruptedException {
+    public void fillKeywordSynopsis() {
+        DriverFactory.getDriver().switchTo().frame(electronicIframe);
+        sendKeys(keywordField, "QA TECHNICAL TEST-ELECTRONIC FOLDER");
+        sendKeys(synopsisField, "QA TECHNICAL TEST-ELECTRONIC FOLDER");
+        DriverFactory.getDriver().switchTo().defaultContent();
+    }
 
+    public void saveElectronicForm() {
+        DriverFactory.getDriver().switchTo().frame(electronicIframe);
+        waitForWebElementAndClick(saveBtn);
+    }
+
+    public void draftElectronicForm() {
+        DriverFactory.getDriver().switchTo().frame(electronicIframe);
+        waitForWebElementAndClick(draftBtn);
+    }
+
+    public void fillAndSaveElectronicForm(String foldername) throws AWTException, InterruptedException {
         waitFor(electronicIframe);
         // Switch to the iframe
         DriverFactory.getDriver().switchTo().frame(electronicIframe);
@@ -94,12 +114,11 @@ public class ElectonicPageObjects extends BasePageObjects {
             }
         }
 
-        sendKeys(searchCriteriaField, "QA TECHNICAL TEST-ELECTRONIC FOLDER");
+        sendKeys(searchCriteriaField, foldername);
         waitForWebElementAndClick(searchCriteriaBtn);
         waitForWebElementAndClick(resultSearchRadioBtn);
         waitForWebElementAndClick(okBtn);
         waitForNewTab(1);
-
-        DriverFactory.getDriver().switchTo().frame(electronicIframe);
+        DriverFactory.getDriver().switchTo().window(originalTab);
     }
 }
