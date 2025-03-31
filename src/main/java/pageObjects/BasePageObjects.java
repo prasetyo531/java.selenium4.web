@@ -111,6 +111,20 @@ public class BasePageObjects {
         button.click();
     }
 
+    public void clickElementBeforeUpload(WebElement element) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(element)); // Wait for the file input to be visible
+        element.click(); // Set the file path to the input
+    }
+
+    public void waitForNewTab(int tabOpened) {
+        WebDriverWait wait = new WebDriverWait(getDriver(), 50);
+        wait.until(ExpectedConditions.numberOfWindowsToBe(tabOpened));
+    }
+
+    /***
+    reporting utility
+     ***/
     public void captureScreenshot(Scenario scenario) {
         // Capture screenshot
         if (driver instanceof TakesScreenshot) {
@@ -142,11 +156,5 @@ public class BasePageObjects {
         } catch (IOException e) {
             Allure.step("Failed to save screenshot: " + e.getMessage());
         }
-    }
-
-    public void clickElementBeforeUpload(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(element)); // Wait for the file input to be visible
-        element.click(); // Set the file path to the input
     }
 }

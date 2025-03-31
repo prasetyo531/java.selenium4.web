@@ -3,6 +3,7 @@ package pageObjects;
 import driver.DriverFactory;
 import environments.Config;
 import environments.Constants;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
@@ -19,8 +20,11 @@ public class ElectonicPageObjects extends BasePageObjects {
 
     private @FindBy(xpath = "//*[@id=\"frmProfileFrm\"]/table/tbody/tr[2]/td/table/tbody/tr[2]/td[3]/div/div[1]/div[2]") WebElement documentToBeField;
     private @FindBy(xpath = "//*[@id=\"fileRefTable\"]/tbody/tr/td[2]") WebElement folderField;
-    private @FindBy(xpath = "//*[@id=\"frmSearchFileRefsFrm\"]/div/div/table/tbody/tr[1]/td/table/tbody/tr/td[4]/input") WebElement searchCriteriaField;
+    private @FindBy(xpath = "//input[@name=\"searchCriteria\"]") WebElement searchCriteriaField;
     private @FindBy(xpath = "//*[@id=\"frmSearchFileRefsFrm\"]/div/div/table/tbody/tr[1]/td/table/tbody/tr/td[5]/input") WebElement searchCriteriaBtn;
+
+    private @FindBy(xpath = "//*[@id=\"uniform-fileRefSysId_581329\"]") WebElement resultSearchRadioBtn;
+    private @FindBy(xpath = "//*[@id=\"frmSearchFileRefsFrm\"]/div/div/table/tbody/tr[4]/td/div/input[1]") WebElement okBtn;
 
     public ElectonicPageObjects() {
         super();
@@ -75,11 +79,27 @@ public class ElectonicPageObjects extends BasePageObjects {
         rb.keyRelease(KeyEvent.VK_ENTER);
 
         waitForWebElementAndClick(folderField);
-
+        DriverFactory.getDriver().switchTo().defaultContent();
         //search criteria
+        String originalTab =  DriverFactory.getDriver().getWindowHandle();
+
+        // Wait for the new tab to open
+        waitForNewTab(2);
+
+        // Switch to the new tab
+        for (String tab : DriverFactory.getDriver().getWindowHandles()) {
+            if (!tab.equals(originalTab)) {
+                DriverFactory.getDriver().switchTo().window(tab);
+                break;
+            }
+        }
+
         sendKeys(searchCriteriaField, "QA TECHNICAL TEST-ELECTRONIC FOLDER");
         waitForWebElementAndClick(searchCriteriaBtn);
+        waitForWebElementAndClick(resultSearchRadioBtn);
+        waitForWebElementAndClick(okBtn);
+        waitForNewTab(1);
 
-        DriverFactory.getDriver().switchTo().defaultContent();
+        DriverFactory.getDriver().switchTo().frame(electronicIframe);
     }
 }
