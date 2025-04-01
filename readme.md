@@ -60,11 +60,13 @@ The following dependencies are included in this project:
 
 To build the project, use the following command:
 
-## Screenshot
+## Screenshot and Record Link
 
 Here is a screenshot of the test execution:
 
 ![Test Execution Screenshot](images/allure.png)
+
+    - ** https://drive.google.com/drive/folders/1nnB_qxOAaIH9_q5f4ugRCpwO0F6AaDAP?usp=sharing
 
 ```bash
 mvn clean package
