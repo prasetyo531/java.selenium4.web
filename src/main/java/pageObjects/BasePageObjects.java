@@ -12,14 +12,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
+import java.util.Properties;
 
 public class BasePageObjects {
 
@@ -120,6 +118,18 @@ public class BasePageObjects {
     public void waitForNewTab(int tabOpened) {
         WebDriverWait wait = new WebDriverWait(getDriver(), 50);
         wait.until(ExpectedConditions.numberOfWindowsToBe(tabOpened));
+    }
+
+    public static String readProperty(String key) throws IOException {
+        Properties prop = new Properties();
+        String cwd = System.getProperty("user.dir");
+        // Load properties only if they haven't been loaded yet
+        if (prop.isEmpty()) {
+            try (FileInputStream ip = new FileInputStream(cwd + "/src/main/resources/config/Config.properties")) {
+                prop.load(ip);
+            }
+        }
+        return prop.getProperty(key);
     }
 
     /***

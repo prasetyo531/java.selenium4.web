@@ -6,6 +6,7 @@ import pageObjects.BasePageObjects;
 import pageObjects.ElectonicPageObjects;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class ElectronicRecordSteps extends BasePageObjects  {
 
@@ -16,21 +17,21 @@ public class ElectronicRecordSteps extends BasePageObjects  {
     }
 
     @When("User fill valid electronic record form in {string} and save")
-    public void userFillValidElectronicRecordFormInAndSave(String foldername) throws AWTException, InterruptedException {
+    public void userFillValidElectronicRecordFormInAndSave(String foldername) throws AWTException, InterruptedException, IOException {
         electonicPageObjects.fillAndSaveElectronicForm(foldername);
         electonicPageObjects.fillKeywordSynopsis();
         electonicPageObjects.saveElectronicForm();
     }
 
     @When("User fill valid electronic record form in {string} and draft")
-    public void userFillValidElectronicRecordFormInAndDraft(String foldername) throws AWTException, InterruptedException {
+    public void userFillValidElectronicRecordFormInAndDraft(String foldername) throws AWTException, InterruptedException, IOException {
         electonicPageObjects.draftElectronicForm(foldername);
         electonicPageObjects.fillKeywordSynopsis();
         electonicPageObjects.draftElectronicForm();
     }
 
     @When("User fill valid electronic record form but with existing details")
-    public void userFillValidElectronicRecordFormButWithExistingDetails() throws InterruptedException, AWTException {
+    public void userFillValidElectronicRecordFormButWithExistingDetails() throws InterruptedException, AWTException, IOException {
         electonicPageObjects.saveExistingElectronicForm();
         electonicPageObjects.fillKeywordSynopsis();
         electonicPageObjects.saveElectronicForm();

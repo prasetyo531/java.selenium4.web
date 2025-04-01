@@ -11,6 +11,9 @@ import org.testng.Assert;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 public class ElectonicPageObjects extends BasePageObjects {
 
@@ -57,7 +60,7 @@ public class ElectonicPageObjects extends BasePageObjects {
         DriverFactory.getDriver().switchTo().defaultContent();
     }
 
-    public void fillAndSaveElectronicForm(String foldername) throws AWTException, InterruptedException {
+    public void fillAndSaveElectronicForm(String foldername) throws AWTException, InterruptedException, IOException {
         waitFor(electronicIframe);
         // Switch to the iframe
         DriverFactory.getDriver().switchTo().frame(electronicIframe);
@@ -74,7 +77,12 @@ public class ElectonicPageObjects extends BasePageObjects {
         Robot rb = new Robot();
         Thread.sleep(2000);
 
-        StringSelection stringSelection = new StringSelection(Config.get(Constants.UPLOAD_PDF_ONE));
+        Properties properties = new Properties();
+        FileInputStream file = new FileInputStream(Constants.CONFIG_FILE_PATH);
+        properties.load(file);
+
+        String uploadPdfOne = readProperty("upload.pdf.one");
+        StringSelection stringSelection = new StringSelection(uploadPdfOne);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 
         // Cmd + Tab is needed since it launches a Java app and the browser looses focus
@@ -128,7 +136,7 @@ public class ElectonicPageObjects extends BasePageObjects {
         DriverFactory.getDriver().switchTo().window(originalTab);
     }
 
-    public void draftElectronicForm(String foldername) throws AWTException, InterruptedException {
+    public void draftElectronicForm(String foldername) throws AWTException, InterruptedException, IOException {
         waitFor(electronicIframe);
         // Switch to the iframe
         DriverFactory.getDriver().switchTo().frame(electronicIframe);
@@ -145,7 +153,8 @@ public class ElectonicPageObjects extends BasePageObjects {
         Robot rb = new Robot();
         Thread.sleep(2000);
 
-        StringSelection stringSelection = new StringSelection(Config.get(Constants.UPLOAD_PDF_DRAFTCASE));
+        String uploadPdfDraft = readProperty("upload.pdf.draftcase");
+        StringSelection stringSelection = new StringSelection(uploadPdfDraft);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 
         // Cmd + Tab is needed since it launches a Java app and the browser looses focus
@@ -199,7 +208,7 @@ public class ElectonicPageObjects extends BasePageObjects {
         DriverFactory.getDriver().switchTo().window(originalTab);
     }
 
-    public void saveExistingElectronicForm() throws AWTException, InterruptedException {
+    public void saveExistingElectronicForm() throws AWTException, InterruptedException, IOException {
         waitFor(electronicIframe);
         // Switch to the iframe
         DriverFactory.getDriver().switchTo().frame(electronicIframe);
@@ -216,7 +225,8 @@ public class ElectonicPageObjects extends BasePageObjects {
         Robot rb = new Robot();
         Thread.sleep(2000);
 
-        StringSelection stringSelection = new StringSelection(Config.get(Constants.UPLOAD_PDF_EXISTINGCASE));
+        String uploadPdfExisting = readProperty("upload.pdf.existing");
+        StringSelection stringSelection = new StringSelection(uploadPdfExisting);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 
         // Cmd + Tab is needed since it launches a Java app and the browser looses focus
