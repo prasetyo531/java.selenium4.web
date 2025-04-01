@@ -9,7 +9,7 @@ Feature: Save Electronic Record
     When User enters credentials "<username>" and "<password>"
     And User directed to homepage
     When User fill valid electronic record form in "<folder>" and save
-#    Then Display process registered successfully
+    Then Display process registered successfully
 
     Examples:
       |   username    |     password      |  folder     |

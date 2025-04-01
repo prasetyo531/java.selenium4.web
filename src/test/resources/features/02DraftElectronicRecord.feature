@@ -9,7 +9,7 @@ Feature: Draft Electronic Record
     When User enters credentials "<username>" and "<password>"
     And User directed to homepage
     When User fill valid electronic record form in "<folder>" and draft
-#    Then Display process draft record registered successfully
+    Then Display process draft record registered successfully
 
     Examples:
       |   username    |     password      |  folder     |

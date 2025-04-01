@@ -51,7 +51,7 @@ public class BasePageObjects {
     }
 
     public void sendKeys(WebElement element, String textToType) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
         wait.until(ExpectedConditions.elementToBeClickable(element)).sendKeys(textToType);
     }
 
@@ -61,7 +61,7 @@ public class BasePageObjects {
     }
 
     public void waitFor(WebElement element) {
-        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(15));
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
@@ -127,8 +127,8 @@ public class BasePageObjects {
      ***/
     public void captureScreenshot(Scenario scenario) {
         // Capture screenshot
-        if (driver instanceof TakesScreenshot) {
-            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        if (getDriver() instanceof TakesScreenshot) {
+            byte[] screenshot = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES);
 
             saveScreenshotToFile(screenshot, scenario.getName());
             // Add screenshot to Allure report

@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="java.selenium4.web" parallel="tests" verbose="2" thread-count="1">
-    <test name="main-test">
+<suite name="java.selenium4.web" parallel="tests" verbose="2" thread-count="2">
+    <test name="first-test">
         <classes>
-            <class name="runners.MainRunner"/>
+            <class name="runners.FirstRunner"/>
+        </classes>
+    </test>
+    <test name="second-test">
+        <classes>
+            <class name="runners.SecondRunner"/>
+        </classes>
+    </test>
+    <test name="third-test">
+        <classes>
+            <class name="runners.ThreeRunner"/>
         </classes>
     </test>
 </suite>
