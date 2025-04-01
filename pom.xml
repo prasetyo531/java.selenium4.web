@@ -8,7 +8,27 @@
     <artifactId>java.selenium4.web</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <properties>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <selenium.version>4.0.0</selenium.version>
+        <cucumber.version>7.0.0</cucumber.version>
+        <testng.version>7.0.0</testng.version>
+        <webdrivermanager.version>5.9.3</webdrivermanager.version>
+        <cucumber.reporting.version>5.7.0</cucumber.reporting.version>
+        <!-- docker plugin util -->
+        <maven.dependency.version>3.6.0</maven.dependency.version>
+        <maven.dependency.version>3.6.0</maven.dependency.version>
+        <maven.jar.version>3.3.0</maven.jar.version>
+        <maven.surefire.version>3.5.2</maven.surefire.version>
+        <maven.resources.plugin>3.3.1</maven.resources.plugin>
+        <!-- output directory -->
+        <package.directory>${project.build.directory}/docker-resources</package.directory>
+    </properties>
+
     <build>
+        <finalName>java.selenium4.web.docker</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -22,7 +42,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.5.2</version>
+                <version>${maven.surefire.version}</version>
                 <configuration>
                     <systemPropertyVariables>
                         <browser>chrome</browser>
@@ -33,19 +53,72 @@
                     </suiteXmlFiles>
                 </configuration>
             </plugin>
+            <!-- To copy all the dependencies to run our tests as part of "mvn package" -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven.dependency.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${package.directory}/libs
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven.jar.version}</version>
+                <configuration>
+                    <outputDirectory>${package.directory}/libs</outputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <includes>**/*.class</includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- To copy resources into the output directory -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven.resources.plugin}</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}</directory>
+                                    <includes>
+                                        <include>testng.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <properties>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <selenium.version>4.0.0</selenium.version>
-        <cucumber.version>7.0.0</cucumber.version>
-        <testng.version>7.0.0</testng.version>
-        <webdrivermanager.version>5.9.3</webdrivermanager.version>
-        <cucumber.reporting.version>5.7.0</cucumber.reporting.version>
-    </properties>
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
