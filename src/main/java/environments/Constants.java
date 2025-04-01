@@ -16,5 +16,7 @@ public class Constants {
     public static final String BASE_URL = "base.url";
 
     // Doc Directory
-    public static final String UPLOAD_PDF_ONE = "upload.pdf.one";
+    public static String UPLOAD_PDF_ONE = "upload.pdf.one";
+    public static final String UPLOAD_PDF_DRAFTCASE = "upload.pdf.draftcase";
+    public static final String UPLOAD_PDF_EXISTINGCASE = "upload.pdf.existing";
 }
