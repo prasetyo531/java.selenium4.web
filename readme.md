@@ -64,10 +64,20 @@ To build the project, use the following command:
 
 Here is a screenshot of the test execution:
 
+- pass test
 ![Test Execution Screenshot](images/allure.png)
 
-    - ** https://drive.google.com/drive/folders/1nnB_qxOAaIH9_q5f4ugRCpwO0F6AaDAP?usp=sharing
+
+- failed test
+![Test Execution Screenshot](images/allure-failed.png)
+
+
+## How to Instructions
+`https://drive.google.com/drive/folders/1nnB_qxOAaIH9_q5f4ugRCpwO0F6AaDAP?usp=sharing`
 
 ```bash
 mvn clean package
+```
+```bash
 mvn test
+```
