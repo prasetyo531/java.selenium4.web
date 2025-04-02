@@ -53,12 +53,8 @@ The following dependencies are included in this project:
 ## Install ##
 - Install JDK 23
 - Install Maven
-- Install Docker(only selenium grid)
+- Install Docker(only selenium grid or jenkins)
 - Install Allure on Mac, install via brew
-
-## Build Instructions
-
-To build the project, use the following command:
 
 ## Screenshot and Record Link
 
@@ -67,17 +63,24 @@ Here is a screenshot of the test execution:
 - pass test
 ![Test Execution Screenshot](images/allure.png)
 
-
 - failed test
 ![Test Execution Screenshot](images/allure-failed.png)
 
-
-## How to Instructions
+## Screen Record
 `https://drive.google.com/drive/folders/1nnB_qxOAaIH9_q5f4ugRCpwO0F6AaDAP?usp=sharing`
 
+## How to run test in jenkins or local
 ```bash
 mvn clean package
 ```
 ```bash
 mvn test
 ```
+
+## How to build jenkins
+- go to dir jenkins/docker-compose.yml
+- run
+```bash
+docker-compose up
+```
+- setup jenkins until complete

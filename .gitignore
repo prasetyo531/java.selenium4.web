@@ -1,5 +1,9 @@
 allure-results/
 target/
+
+### Dont change ###
+jenkins/volumes/master/**
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
