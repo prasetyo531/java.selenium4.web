@@ -88,3 +88,9 @@ docker-compose up
 - create pipeline project
 - configure pipeline project
 - trigger build from jenkins
+
+## Jenkins Report
+
+Here is a screenshot of the test execution jenkins:
+
+  ![Test Execution Screenshot](images/report-cucumber-jenkins.png)
