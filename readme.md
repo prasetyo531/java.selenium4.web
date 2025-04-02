@@ -77,10 +77,14 @@ mvn clean package
 mvn test
 ```
 
-## How to build jenkins
+## How to execute test in jenkins
 - go to dir jenkins/docker-compose.yml
 - run
 ```bash
 docker-compose up
 ```
 - setup jenkins until complete
+- connecting slave to master
+- create pipeline project
+- configure pipeline project
+- trigger build from jenkins

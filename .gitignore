@@ -3,6 +3,7 @@ target/
 
 ### Dont change ###
 jenkins/volumes/master/**
+jenkins/volumes/node/**
 
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
