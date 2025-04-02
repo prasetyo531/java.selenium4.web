@@ -295,6 +295,6 @@ public class ElectonicPageObjects extends BasePageObjects {
     public void recordUploadFailed(String msg) {
         waitFor(errorDialogMsg);
         String errorMsg = errorDialogMsg.getText();
-        Assert.assertEquals(msg, errorMsg);
+        Assert.assertEquals(errorMsg, msg);
     }
 }
