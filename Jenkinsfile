@@ -12,6 +12,22 @@ pipeline {
                 sh 'mvn clean'
             }
         }
+         stage('Run Docker Compose and Wait for Selenium Hub') {
+            steps {
+                dir('java.selenium4.web') {
+                    // Run Docker Compose
+                    sh 'docker-compose up -d'
+
+                    // Call the health check script
+                    script {
+                    def result = sh(script: './grid-healthcheck.sh', returnStatus: true)
+                        if (result != 0) {
+                        error "Selenium Hub did not become ready in time."
+                        }
+                    }
+                }
+            }
+        }
         stage('Test') {
             steps {
                 sh 'mvn test'

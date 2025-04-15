@@ -46,7 +46,8 @@
                 <configuration>
                     <systemPropertyVariables>
                         <browser>chrome</browser>
-                        <selenium.grid.enabled>false</selenium.grid.enabled>
+                        <!-- change to false to simulate real browser not using grid -->
+                        <selenium.grid.enabled>true</selenium.grid.enabled>
                     </systemPropertyVariables>
                     <suiteXmlFiles>
                         <suiteXmlFile>${project.basedir}/testng.xml</suiteXmlFile>

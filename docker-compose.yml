@@ -6,7 +6,7 @@ services:
       - 4444:4444
   chrome:
     image: selenium/node-chromium:4.27
-    shm_size: '2g'
+    shm_size: '1g'
     depends_on:
       - hub
     environment:
@@ -14,10 +14,11 @@ services:
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
       - SE_NODE_OVERRIDE_MAX_SESSIONS=true
-      - SE_NODE_MAX_SESSIONS=4
+      # SE_NODE_MAX_SESSIONS=4 if using better vm machine
+      - SE_NODE_MAX_SESSIONS=1
   firefox:
     image: selenium/node-firefox:4.27
-    shm_size: '2g'
+    shm_size: '1g'
     depends_on:
       - hub
     environment:
@@ -25,4 +26,5 @@ services:
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
       - SE_NODE_OVERRIDE_MAX_SESSIONS=true
-      - SE_NODE_MAX_SESSIONS=4
+      # SE_NODE_MAX_SESSIONS=4 if using better vm machine
+      - SE_NODE_MAX_SESSIONS=1
