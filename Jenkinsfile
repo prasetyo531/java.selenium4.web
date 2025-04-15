@@ -16,7 +16,7 @@ pipeline {
             steps {
                 dir('java.selenium4.web') {
                     // Run Docker Compose
-                    sh 'docker-compose up -d'
+                    sh 'sudo docker-compose up -d'
 
                     // Call the health check script
                     script {
