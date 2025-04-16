@@ -13,7 +13,6 @@ services:
 
   chrome:
     image: seleniarm/node-chromium:latest
-    shm_size: 2gb
     depends_on:
       - selenium-hub
     environment:
@@ -25,7 +24,6 @@ services:
 
   firefox:
     image: seleniarm/node-firefox:latest
-    shm_size: 2gb
     depends_on:
       - selenium-hub
     environment:
