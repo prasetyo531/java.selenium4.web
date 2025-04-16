@@ -22,10 +22,6 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     networks:
       - selenium-network
-    deploy:
-      resources:
-        limits:
-          memory: 2g
 
   firefox:
     image: seleniarm/node-firefox:latest
@@ -38,10 +34,6 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     networks:
       - selenium-network
-    deploy:
-      resources:
-        limits:
-          memory: 2g
 
 networks:
   selenium-network:
