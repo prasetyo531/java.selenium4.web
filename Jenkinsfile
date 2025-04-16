@@ -15,7 +15,7 @@ pipeline {
          stage('Run Docker Compose and Wait for Selenium Hub') {
 			steps {
 				// Run Docker Compose
-                sh 'sudo docker-compose up -d'
+                sh 'docker-compose up -d'
                 sh 'chmod +x ./grid-healthcheck.sh || true'
 
                 // Call the health check script
