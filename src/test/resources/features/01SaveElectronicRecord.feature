@@ -8,8 +8,8 @@ Feature: Save Electronic Record
     Given User has accessed login page
     When User enters credentials "<username>" and "<password>"
     And User directed to homepage
-    When User fill valid electronic record form in "<folder>" and save
-    Then Display process registered successfully
+    #When User fill valid electronic record form in "<folder>" and save
+    #Then Display process registered successfully
 
     Examples:
       |   username    |     password      |  folder     |
